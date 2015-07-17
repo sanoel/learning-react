@@ -1,0 +1,6 @@
+div.notes-container {
+  border-width: 10 px;
+  border-color: #123456;
+  border-style: solid;
+  width: 80%;
+}
