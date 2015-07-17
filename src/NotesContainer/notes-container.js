@@ -1,13 +1,19 @@
-React = require('react');
+var React = require('react');
+var NoteList = require('../NoteList/note-list.js');
+
 require("./notes-container.css");
 
-var NotesContainer= React.createClass({
+var _NotesContainer = React.createClass({
   render: function () {
     return (
       <div id="notes-container" className="notes-container">
-        <h2> NOTES </h2> 
+        <NoteList />
+        <hr>
+        The note says: ????
       </div>
     ); 
   }
 });
-React.render(<NotesContainer/>, document.getElementById("app-container"));
+
+module.exports = _NotesContainer;
+

@@ -1,8 +1,8 @@
-React = require('react');
-require("./note.css");
-require("../NoteList/notelist.js");
+var React = require('react');
 
-var Note = React.createClass({
+require("./note.css");
+
+var _Note = React.createClass({
   render: function () {
     return (
       <div contentEditable="true" className="note">
@@ -11,4 +11,5 @@ var Note = React.createClass({
     ); 
   }
 });
-React.render(<Note/>, document.getElementById("samsnotelist"));
+
+module.exports = _Note;

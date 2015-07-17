@@ -1,14 +1,5 @@
 var React = require('react');
 var App = require('./App.jsx');
 
-(function () {
+React.render(<App />, document.getElementById('app-container'));
 
-	function render() {
-		React.render(
-			<App />,
-			document.body
-		);
-	}
-	render();
-	
-})();

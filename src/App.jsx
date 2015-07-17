@@ -1,14 +1,11 @@
 var React = require('react');
+var NotesContainer = require('./NotesContainer/notes-container.js');
 var style = require('./App.css');
 
 var App = React.createClass({
     render: function() {
         return (
-            <div>
-                <div className='App'>
-                    Hello There
-                </div>
-            </div>
+          <NotesContainer />
         );
     }
 });
