@@ -1,16 +1,22 @@
 var React = require('react');
 var style = require('./App.css');
+var NoteList = require('./NoteList/note-list.js');
 
 var App = React.createClass({
-    render: function() {
-        return (
-            <div>
-                <div className='App'>
-                    Hello There
-                </div>
-            </div>
-        );
-    }
-});
+  getInitialState: function() {
+    return {
+      notes: [{title: "hello"},{title: "world"}]
+    };
+  },
 
+  listUpdate: function(new_list) {
+    this.setState({notes: new_list});
+  },
+
+  render: function() {
+    return ( 
+      <NoteList notes={this.state.notes} />
+    );
+  }
+});
 module.exports = App;

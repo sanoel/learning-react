@@ -1,17 +1,21 @@
-React = require('react');
+var React = require('react');
+var Note = require('../Note/note.js');
 require("./new-note-button.css");
-require("../NotesContainer/notes-container.js");
-var NewNoteButton = React.createClass({
+
+var _NewNoteButton = React.createClass({
   render: function () {
     return (
-      <div id="newnotebutton" className="new-note-button">
-        ++ New Note ++
+      <div id="newnotebutton" onClick={this.onButtonClick} className="new-note-button">
+        ++++++
       </div>
     ); 
-  }
+  },
 
-  onButtonClick: function () {
+  onButtonClick: function (evt) {
+    return (
+      <Note anote={this.props.anote} />
+    );
   }
-
 });
-React.render(<NewNoteButton/>, document.getElementById("notes-container"));
+module.exports = _NewNoteButton;
+

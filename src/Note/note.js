@@ -1,14 +1,19 @@
-React = require('react');
+var React = require('react');
 require("./note.css");
-require("../NoteList/notelist.js");
 
-var Note = React.createClass({
+var _Note = React.createClass({
+  textboxChanged: function(evt) {
+    this.props.noteUpdated.noteUpdated({title: evt.target.value});
+  },
+
   render: function () {
+    console.log(this.props);
     return (
-      <div contentEditable="true" className="note">
-        This is Note 1.
+      <div id="Note"> 
+     <input type="text" value={this.props.title} onChange={this.textboxChanged}/>
       </div>
+     
     ); 
   }
 });
-React.render(<Note/>, document.getElementById("samsnotelist"));
+module.exports = _Note;

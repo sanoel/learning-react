@@ -1,5 +1,5 @@
 module.exports = {
-  entry: './src/Note/note.js',
+  entry: './src/main.jsx',
 
   output: {
     filename: 'build/bundle.js',
@@ -7,7 +7,7 @@ module.exports = {
 
   module: {
     loaders: [
-      { test: /\.js$/, loader: 'jsx-loader?harmony' },
+      { test: /\.jsx?$/, loader: 'babel-loader' },
       { test: /\.css$/, loader: 'style-loader!css-loader' },
     ],
   },
