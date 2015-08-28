@@ -1,7 +1,6 @@
 var React = require('react');
 var Note = require('../Note/note.js');
 var _ = require('lodash');
-
 require("./note-list.css");
 
 var _NoteList = React.createClass({

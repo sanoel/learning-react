@@ -3,7 +3,6 @@ var style = require('./App.css');
 var NoteList = require('./NoteList/note-list.js');
 
 var App = React.createClass({
-  getInitialState: function() {
     return {
       notes: [{title: "hello"},{title: "world"}]
     };
