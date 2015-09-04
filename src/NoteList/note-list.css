@@ -1,6 +1,7 @@
-div.notelist {
-  border-width: 2 px;
-  border-color: #123456;
-  border-style: solid;
+.notelist {
   width: 50%;
+  height: 100%;
+  padding: 10px;
+  background-color: #000066;
+  border-radius: 7px;
 }

@@ -1,21 +1,18 @@
 var React = require('react');
-var Note = require('../Note/note.js');
 require("./new-note-button.css");
 
 var _NewNoteButton = React.createClass({
   render: function () {
     return (
-      <div id="newnotebutton" onClick={this.onButtonClick} className="new-note-button">
-        ++++++
-      </div>
+      <button type= "button" onClick={this.onButtonClick} className="new-note-button">
+      Add Note
+      </button>
     ); 
   },
 
   onButtonClick: function (evt) {
-    return (
-      <Note anote={this.props.anote} />
-    );
-  }
+    this.props.addNoteButtonClick();
+  },
 });
 module.exports = _NewNoteButton;
 
