@@ -1,7 +1,6 @@
 .notelist {
   width: 50%;
   height: 100%;
-  padding: 10px;
-  background-color: #000066;
-  border-radius: 7px;
+  background-color: LightGray;
+  border-radius: 2px;
 }

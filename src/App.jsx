@@ -1,28 +1,32 @@
-var React = require('react');
+var React = require('react/addons');
 var style = require('./App.css');
 var NoteList = require('./NoteList/note-list.js');
 
 var App = React.createClass({
+  mixins: [React.addons.LinkedStateMixin],
+
   getInitialState: function() {
     return {
-      notes: [{title: "hello"},{title: "world"}]
+      notes: [
+        {id:'asdfsafw', title:"hello"},
+        {id:'sdfwoijd', title:"world"}
+      ]
     };
   },
 
-  listUpdate: function(new_list) {
-    this.setState({notes: new_list});
-  },
-
-    aNoteWasEdited: function(new_note_text) {
-      this.setState({
-        thenote: new_note_text,
-      });
-    },
+ // listUpdate: function(new_list) {
+ //   this.setState({notes: new_list});
+ // },
 
   render: function() {
+  //  var valueLink = {
+  //    value: this.state.notes,
+  //    requestChange: this.listUpdate
+  //  };
+
     return ( 
       <div className="app">
-        <NoteList notes={this.state.notes} listUpdated={this.listUpdate} />
+        <NoteList valueLink={this.linkState('notes')} />
         {this.state.notes[0].title}
       </div>
     );

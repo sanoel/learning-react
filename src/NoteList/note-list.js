@@ -2,46 +2,43 @@ var React = require('react');
 var Note = require('../Note/note.js');
 var NewNoteButton = require('../NewNoteButton/new-note-button.js');
 var _ = require('lodash');
-var noteCounter = 0;
+var uuid = require('uuid');
 require("./note-list.css");
 
 var _NoteList = React.createClass({
   addNote: function() {
-    var notes_array = this.props.notes;
-    notes_array.push(<Note title={"New note"} noteUpdated={this.generateNoteUpdatedFunc(noteCounter)} removeNote={this.deleteNote} idNum={noteCounter}/>);
-    noteCounter++;
-    this.props.listUpdated(this.props.notes);
+    var list = _.cloneDeep(this.props.valueLink.value);
+    list.push({id: uuid.v4().replace('-',''), title: ''});
+    this.props.valueLink.requestChange(list);
   },
   
-  deleteNote: function(noteIdNum) {
-    console.log(this.props.notes);
-    for(var i in this.props.notes) {
-      var n = this.props.notes[i];
-      if (n.idNum == noteIdNum) {
-        this.props.notes.splice(i, 1);  
-        this.props.listUpdated(this.props.notes);
-        break;
-      }
-    }
+  deleteNote: function(id_to_delete) {
+   var list = _.cloneDeep(this.props.valueLink.value); 
+   var note_id_to_delete = _.findKey(list, function(l) {
+      return l.id === id_to_delete
+    });
+      
+    list.splice(note_id_to_delete, 1);
+    this.props.valueLink.requestChange(list);
   },
 
-  generateNoteUpdatedFunc: function(note) {
-    var self = this;
-    return function(new_note) {
-      _.each(new_note, function(val, key) {
-        note[key] = val;
-      });
+  aNoteWasUpdated: function(id, new_note) {
+    var list = _.cloneDeep(this.props.valueLink.value);
+    var note_we_want = _.find(list, function(l) {
+      return l.id == id;
+    });
+    _.each(new_note, function(val, key) {
+      note_we_want[key] = val;
+    });
 
-      self.props.listUpdated(self.props.notes);
-    };
+    this.props.valueLink.requestChange(list);
   },
 
   render: function () {
     var notes_array  = [];
-    for(var i in this.props.notes){
-      var n = this.props.notes[i];
-      notes_array.push(<Note title={n.title} noteUpdated={this.generateNoteUpdatedFunc(noteCounter)} removeNote={this.deleteNote} idNum={noteCounter}/>);
-    noteCounter++;
+    for(var i in this.props.valueLink.value){
+      var n = this.props.valueLink.value[i];
+      notes_array.push(<Note title={n.title} key={('note-'+i)} id={n.id} removeNote={this.deleteNote} noteUpdated={this.aNoteWasUpdated}/>);
     }
 
     return (
