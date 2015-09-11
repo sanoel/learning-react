@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('react/addons');
 var Note = require('../Note/note.js');
 var NewNoteButton = require('../NewNoteButton/new-note-button.js');
 var _ = require('lodash');
@@ -38,7 +38,15 @@ var _NoteList = React.createClass({
     var notes_array  = [];
     for(var i in this.props.valueLink.value){
       var n = this.props.valueLink.value[i];
-      notes_array.push(<Note title={n.title} key={('note-'+i)} id={n.id} removeNote={this.deleteNote} noteUpdated={this.aNoteWasUpdated}/>);
+      var valueLink = {
+        value: this.props.valueLink.value[i],
+        title: n.title,
+        key: 'note-'+i,
+        id: n.id,
+        removeNote: this.deleteNote,
+        noteUpdated: this.aNoteWasUpdated
+      };
+      notes_array.push(<Note valueLink={valueLink} />);
     }
 
     return (

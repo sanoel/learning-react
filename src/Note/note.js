@@ -3,17 +3,17 @@ require("./note.css");
 
 var _Note = React.createClass({
   textboxChanged: function(evt) {
-    this.props.noteUpdated(this.props.id, {title: evt.target.value});
+    this.props.valueLink.noteUpdated(this.props.valueLink.id, {title: evt.target.value});
   },
 
   onButtonClick: function(evt) {
-    this.props.removeNote(this.props.id);
+    this.props.valueLink.removeNote(this.props.valueLink.id);
   },
 
   render: function () {
     return (
       <div className="note"> 
-        <input type="text" value={this.props.title} onChange={this.textboxChanged}/>
+        <input type="text" value={this.props.valueLink.title} onChange={this.textboxChanged}/>
         <button type="button" className="remove-note-button" onClick={this.onButtonClick}>
           Remove
         </button>
