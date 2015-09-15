@@ -1,5 +1,1 @@
-Welcome to the Field Notebook!
-
-This project is very early in development.
-
-The Field Notebook, sometimes called "GIS Lite", is an application for viewing GIS data and making notes.  Currently, our focus is on agricultural applications, but it can easily be adapted for other applications.
+This repo is used as a testing area as I learn react.
