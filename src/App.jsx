@@ -1,35 +1,31 @@
 var React = require('react/addons');
 var style = require('./App.css');
 var NoteList = require('./NoteList/note-list.js');
+var uuid = require('uuid');
+var Baobab = require('baobab');
+var branch = require('baobab-react/mixins').branch;
+require('./reset.css');
 
-var App = React.createClass({
-  mixins: [React.addons.LinkedStateMixin],
+var _App = React.createClass({
+  mixins: [branch],
+  
+  cursors: {
+    notes: ['models', 'notes'],
+    display_note: ['models', 'notes', 'abc'],
+  },
 
   getInitialState: function() {
     return {
-      notes: [
-        {id:'asdfsafw', title:"hello"},
-        {id:'sdfwoijd', title:"world"}
-      ]
     };
   },
 
- // listUpdate: function(new_list) {
- //   this.setState({notes: new_list});
- // },
-
   render: function() {
-  //  var valueLink = {
-  //    value: this.state.notes,
-  //    requestChange: this.listUpdate
-  //  };
-
     return ( 
       <div className="app">
-        <NoteList valueLink={this.linkState('notes')} />
-        {this.state.notes[0].title}
+        <NoteList valueLink={this.state.notes} />
+        {this.state.display_note}
       </div>
     );
   }
 });
-module.exports = App;
+module.exports = _App;
