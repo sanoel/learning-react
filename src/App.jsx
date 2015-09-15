@@ -23,7 +23,7 @@ var _App = React.createClass({
     return ( 
       <div className="app">
         <NoteList valueLink={this.state.notes} />
-        {this.state.display_note}
+        {this.state.display_note.text}
       </div>
     );
   }
