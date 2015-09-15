@@ -1,10 +1,9 @@
 var React = require('react/addons');
-var style = require('./App.css');
 var NoteList = require('./NoteList/note-list.js');
 var uuid = require('uuid');
 var Baobab = require('baobab');
 var branch = require('baobab-react/mixins').branch;
-require('./reset.css');
+require('./App.css');
 
 var _App = React.createClass({
   mixins: [branch],
