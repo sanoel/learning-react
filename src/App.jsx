@@ -3,26 +3,37 @@ var NoteList = require('./NoteList/note-list.js');
 var uuid = require('uuid');
 var Baobab = require('baobab');
 var branch = require('baobab-react/mixins').branch;
+var _ = require('lodash');
 require('./App.css');
+var Map = require('./Map/map.js');
 
 var _App = React.createClass({
   mixins: [branch],
   
   cursors: {
     notes: ['models', 'notes'],
-    display_note: ['models', 'notes', 'abc'],
   },
 
   getInitialState: function() {
     return {
     };
   },
+  
+  getFirstNoteText: function() {
+    var first_note = _.reduce(this.state.notes, function(acc, n) {
+      if (acc.order < 0 || n.order < acc.order) return n;
+      return acc;
+    }, { order: -1 });
+    return first_note.text;    
+  },
 
   render: function() {
+    var position = [51.505, -0.09];
     return ( 
       <div className="app">
-        <NoteList valueLink={this.state.notes} />
-        {this.state.display_note.text}
+        <NoteList />
+        <Map className="Map"/>
+        {this.getFirstNoteText()}
       </div>
     );
   }

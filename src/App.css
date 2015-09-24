@@ -1,4 +1,10 @@
 .app {
   background-color: #B0B0B0;
-  height: 100vh;
+  height: 100%;
+}
+.Map {
+padding: 2px;
+float: right;
+width: 50%;
+height:100vh;
 }

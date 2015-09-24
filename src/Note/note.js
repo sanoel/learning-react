@@ -18,16 +18,15 @@ var _Note = React.createClass({
     this.context.tree.commit();
   },
 
-  onButtonClick: function(evt) {
-    this.cursors.self.unset();
-    this.context.tree.commit();
+  deleteButtonClick: function(evt) {
+    this.state.self.delete
   },
 
   render: function () {
     return (
       <div className="note"> 
         <input type="text" value={this.state.self.text} onChange={this.textboxChanged}/>
-        <button type="button" className="remove-note-button" onClick={this.onButtonClick}>
+        <button type="button" className="remove-note-button" onClick={this.deleteButtonClick}>
           Remove
         </button>
       </div>

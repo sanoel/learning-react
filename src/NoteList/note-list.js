@@ -9,19 +9,32 @@ require("./note-list.css");
 var _NoteList = React.createClass({
   mixins: [branch],
 
-  cursors: {
-    notes:['models', 'notes'],
+  cursors: function() {
+    return {
+      notes:['models', 'notes'],
+    };
+  },
+  
+  deleteNote: function(id) {
+    this.state.notes.id.unset();
+    this.context.tree.commit();
+    console.log(this.state.notes);
+    _.each(this.state.notes, function(note) {
+      if (note.order > delete_note_order) this.state.notes.note.order++;
+    });
+    console.log(this.state.notes);
   },
 
   addNote: function() {
     var obj_id = uuid.v4().replace('-','');
     this.cursors.notes.set(obj_id);
     var obj = {   
-      key: obj_id,
+      id: obj_id,
       text: ' ',
       order: Object.keys(this.state.notes).length,
       tags: [],
       fields:[],
+      delete: this.cursors.deleteNote(obj_id),
     };
     this.cursors.notes.set(obj_id, obj);
     this.context.tree.commit();
@@ -31,7 +44,7 @@ var _NoteList = React.createClass({
     var notes_array  = [];
     for(var i in this.state.notes){
       var n = this.state.notes[i];
-      notes_array.push(<Note id={this.state.notes[i].key} key={this.state.notes[i].key} />);
+      notes_array.push(<Note id={this.state.notes[i].id} key={this.state.notes[i].id} />);
     }
 
     return (
