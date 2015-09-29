@@ -19,7 +19,7 @@ var _Note = React.createClass({
   },
 
   deleteButtonClick: function(evt) {
-    this.state.self.delete
+    this.state.self.delete(this.props.id);
   },
 
   render: function () {

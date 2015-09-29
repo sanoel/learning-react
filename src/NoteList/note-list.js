@@ -16,25 +16,37 @@ var _NoteList = React.createClass({
   },
   
   deleteNote: function(id) {
-    this.state.notes.id.unset();
+    this.state.notes[id].unset();
     this.context.tree.commit();
     console.log(this.state.notes);
     _.each(this.state.notes, function(note) {
-      if (note.order > delete_note_order) this.state.notes.note.order++;
+      if (note.order > delete_note_order) this.state.notes.note.order--;
     });
-    console.log(this.state.notes);
   },
 
   addNote: function() {
     var obj_id = uuid.v4().replace('-','');
     this.cursors.notes.set(obj_id);
+    var baum = this.context.tree;
+    var self = this;
     var obj = {   
       id: obj_id,
       text: ' ',
       order: Object.keys(this.state.notes).length,
       tags: [],
       fields:[],
-      delete: this.cursors.deleteNote(obj_id),
+      delete: function(id) {
+        var delete_note_order = self.state.notes[id].order;
+        self.context.tree.unset(['models', 'notes', id]);
+        self.context.tree.commit();
+        _.each(self.state.notes, function(note) {
+          if (note.order > delete_note_order) {
+            self.context.tree.set(['models', 'notes', note.id, 'order'], self.state.notes[note.id].order--);
+          }
+        });
+        self.context.tree.commit();
+        console.log(self.context.tree);
+      },
     };
     this.cursors.notes.set(obj_id, obj);
     this.context.tree.commit();

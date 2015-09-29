@@ -1,25 +1,32 @@
 var React = require('react/addons');
-import { render } from 'react-dom';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+var leaflet = require('leaflet');
 var branch = require('baobab-react/mixins').branch;
 require('./map.css');
 
 var _Map = React.createClass({
   mixins: [branch],
 
+  createMap: function(element) {
+    var tiles = leaflet.tileLayer('http://otile1.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png', {
+      attribution: 'Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
+    });
+    var map = leaflet.map('map');//element);
+    tiles.addTo(map);
+    return map;
+  },
+
+  componentDidMount: function() {
+    if (this.props.createMap) {
+      this.map = this.props.createMap(this.getDOMNode);
+    } else {
+      this.map = this.createMap(this.getDOMNode()); 
+    }
+  }, 
+
   render: function() {
-    var position = [51.505, -0.09];
     return (
-      <Map center={position} zoom={13}>
-        <TileLayer url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        />
-        <Marker position={position}>
-          <Popup>
-            <span>A pretty CSS3 popup.<br/>Easily customizable.</span>
-          </Popup>
-        </Marker>
-      </Map>
+      <div id='map' className="map">
+      </div>
     );
   },
 });

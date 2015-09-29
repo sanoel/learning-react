@@ -12,6 +12,10 @@ module.exports = {
     ],
   },
 
+  externals: {
+    'leaflet': 'L',
+  },
+
   resolve: {
     extensions: ['', '.js', '.json', ],
   },

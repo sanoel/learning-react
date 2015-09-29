@@ -28,11 +28,10 @@ var _App = React.createClass({
   },
 
   render: function() {
-    var position = [51.505, -0.09];
     return ( 
       <div className="app">
         <NoteList />
-        <Map className="Map"/>
+        <Map />
         {this.getFirstNoteText()}
       </div>
     );
