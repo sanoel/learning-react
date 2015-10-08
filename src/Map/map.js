@@ -7,11 +7,13 @@ var _Map = React.createClass({
   mixins: [branch],
 
   createMap: function(element) {
+    var map = leaflet.map(element, {
+      center: [40,-87], 
+      zoom: 5
+    });
     var tiles = leaflet.tileLayer('http://otile1.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png', {
       attribution: 'Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
-    });
-    var map = leaflet.map('map');//element);
-    tiles.addTo(map);
+    }).addTo(map);
     return map;
   },
 
@@ -25,7 +27,7 @@ var _Map = React.createClass({
 
   render: function() {
     return (
-      <div id='map' className="map">
+      <div id='map' >
       </div>
     );
   },

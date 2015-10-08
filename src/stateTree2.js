@@ -5,10 +5,6 @@ var stateTree = new Baobab({
   models: {
     notes: initial_notes(),
   },
-  view: {
-    tabmode: 'fields', //options are all, fields, or tags 
-    activetags: [],
-  }
 }); 
 
 function initial_notes() { 

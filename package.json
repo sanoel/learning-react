@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jlwatkins/OADA-pop-map-demo.git"
+    "url": "https://github.com/sanoel/learning-react.git"
   },
-  "author": "Joseph Watkins",
+  "author": "Sam Noel",
   "license": "Apache 2.0",
   "bugs": {
-    "url": "https://github.com/jlwatkins/OADA-pop-map-demo/issues"
+    "url": "https://github.com/sanoel/learning-react/"
   },
-  "homepage": "https://github.com/jlwatkins/OADA-pop-map-demo",
+  "homepage": "https://github.com/sanoel/learning-react",
   "dependencies": {
     "bluebird": "^2.9.26",
     "chroma-js": "^0.7.4",

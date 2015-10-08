@@ -6,6 +6,7 @@ var branch = require('baobab-react/mixins').branch;
 var _ = require('lodash');
 require('./App.css');
 var Map = require('./Map/map.js');
+//require('./Map/map-pane.css');
 
 var _App = React.createClass({
   mixins: [branch],
@@ -31,7 +32,7 @@ var _App = React.createClass({
     return ( 
       <div className="app">
         <NoteList />
-        <Map />
+        <Map id="map-pane"/>
         {this.getFirstNoteText()}
       </div>
     );

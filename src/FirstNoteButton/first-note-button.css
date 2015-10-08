@@ -1,21 +1,18 @@
-.note {
-  border-style:solid;
+#first-note-button {
+  border-style: dashed;
   border-width: 2px;
   border-color: DarkGrey;
   border-radius: 2px;
-  background-color: white;
+  background-color:#D6EBFF;
   width: 460px;
   height: 50px;
   margin: 10px;
   padding: 5px;
   box-shadow: 3px 3px 3px black;
 }
-.remove-note-button {
-  float:right;
-}
 textarea {
-  height: 45px;
-  width:375px;
+  height: 40px;
+  width:370px;
   resize:none;
   border:none;
 }

@@ -19,13 +19,13 @@ var _Note = React.createClass({
   },
 
   deleteButtonClick: function(evt) {
-    this.state.self.delete(this.props.id);
+    this.props.deleteNote(this.props.id);
   },
 
   render: function () {
     return (
       <div className="note"> 
-        <input type="text" value={this.state.self.text} onChange={this.textboxChanged}/>
+        <textarea value={this.state.self.text} onChange={this.textboxChanged}></textarea>
         <button type="button" className="remove-note-button" onClick={this.deleteButtonClick}>
           Remove
         </button>
