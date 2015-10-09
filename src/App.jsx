@@ -6,7 +6,6 @@ var branch = require('baobab-react/mixins').branch;
 var _ = require('lodash');
 require('./App.css');
 var Map = require('./Map/map.js');
-//require('./Map/map-pane.css');
 
 var _App = React.createClass({
   mixins: [branch],

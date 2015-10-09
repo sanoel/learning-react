@@ -4,10 +4,12 @@ var uuid = require('uuid');
 var stateTree = new Baobab({
   models: {
     notes: initial_notes(),
+    allTags: ['low area', 'herbicide'],
   },
   view: {
     tabmode: 'fields', //options are all, fields, or tags 
     activetags: [],
+    tags_modal: false,
   }
 }); 
 
@@ -17,14 +19,14 @@ function initial_notes() {
 
   for (var i = 1; i<3;i++) {
     var note = {
-        text: 'hello',
-        tags: ['no herbicide; ran out'],
+        text: 'ran out of herbicide and applied none here',
+        tags: ['herbicide'],
         fields: ['Smith40'],
     };
     if (i === 2) {
       note = {
         text: 'hey',
-        tags: ['low areas'],
+        tags: ['low area'],
         fields: ['Smith40'],
       };
     }

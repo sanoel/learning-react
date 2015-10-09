@@ -5,7 +5,7 @@ var Baobab = require('baobab');
 var uuid = require('uuid');
 var style = require('./reset.css'); 
 var stateTree = require('./stateTree.js');
-
+     
 var Main = React.createClass({
 
   mixins: [root],

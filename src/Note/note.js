@@ -1,7 +1,8 @@
 var React = require('react/addons');
 var Baobab = require('baobab');
 var branch = require('baobab-react/mixins').branch;
-require("./note.css");
+var TagsModal = require('../TagsModal/tags-modal.js');
+require('./note.css');
 
 var _Note = React.createClass({
   mixins: [branch],
@@ -10,6 +11,8 @@ var _Note = React.createClass({
     return {
       notes: ['models', 'notes'],
       self: ['models', 'notes', this.props.id],
+      tagsModalBool: ['view', 'tags_modal'],
+      allTags: ['model', 'allTags'],
     };
   },
 
@@ -22,6 +25,11 @@ var _Note = React.createClass({
     this.props.deleteNote(this.props.id);
   },
 
+  openTagsModal: function() {
+    this.cursors.tagsModalBool.set(true);
+    this.context.tree.commit();
+  },
+
   render: function () {
     return (
       <div className="note"> 
@@ -29,6 +37,10 @@ var _Note = React.createClass({
         <button type="button" className="remove-note-button" onClick={this.deleteButtonClick}>
           Remove
         </button>
+        <button type="button" className="tags" onClick={this.openTagsModal}>
+          tags
+        </button>
+        <TagsModal /> 
       </div>
     ); 
   }
