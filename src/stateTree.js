@@ -2,16 +2,34 @@ var Baobab = require('baobab');
 var uuid = require('uuid');
 
 var stateTree = new Baobab({
-  models: {
-    notes: initial_notes(),
+  model: {
+    notes: initial_notes(), //initial_notes(),
     allTags: ['low area', 'herbicide'],
   },
   view: {
     tabmode: 'fields', //options are all, fields, or tags 
     activetags: [],
     tags_modal: false,
+    tags_modal_note_id: {},
+    tags_modal_completions: [],
   }
 }); 
+
+function initial_note() { 
+  var notes_list = {};
+  for (var i = 1; i<2;i++) {
+    var note = {
+        text: 'Type your first note here',
+        tags: [],
+        fields: [],
+        polygon: [[]],
+    };
+    note.order = i;
+    note.id = uuid.v4().replace('-','');
+    notes_list[note.id] = note;
+  };
+  return notes_list;
+}
 
 function initial_notes() { 
 
@@ -19,15 +37,17 @@ function initial_notes() {
 
   for (var i = 1; i<3;i++) {
     var note = {
-        text: 'ran out of herbicide and applied none here',
+        text: 'ran low on herbicide and applied lower rate here',
         tags: ['herbicide'],
         fields: ['Smith40'],
+        polygon: [[-85.5, 38.5], [-85.55, 38.55]],
     };
     if (i === 2) {
       note = {
-        text: 'hey',
+        text: 'drown out; replanted 6/18/2015',
         tags: ['low area'],
         fields: ['Smith40'],
+        polygon: [[[38.5, -85.5], [38.5, -85.55]]],
       };
     }
     note.order = i;

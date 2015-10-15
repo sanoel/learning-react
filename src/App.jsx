@@ -6,12 +6,13 @@ var branch = require('baobab-react/mixins').branch;
 var _ = require('lodash');
 require('./App.css');
 var Map = require('./Map/map.js');
+var TagsModal = require('./TagsModal/tags-modal.js');
 
 var _App = React.createClass({
   mixins: [branch],
   
   cursors: {
-    notes: ['models', 'notes'],
+    notes: ['model', 'notes'],
   },
 
   getInitialState: function() {
@@ -32,6 +33,7 @@ var _App = React.createClass({
       <div className="app">
         <NoteList />
         <Map id="map-pane"/>
+        <TagsModal /> 
         {this.getFirstNoteText()}
       </div>
     );

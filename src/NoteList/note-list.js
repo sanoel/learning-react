@@ -1,9 +1,8 @@
 var React = require('react/addons');
 var Note = require('../Note/note.js');
-var NewNoteButton = require('../NewNoteButton/new-note-button.js');
 var FirstNoteButton = require('../FirstNoteButton/first-note-button.js');
 var TabsBar = require('../TabsBar/tabs-bar.js');
-var SearchBar = require('../SearchBar/search-bar.js');
+var SearchBar = require('react-search-bar');
 var _ = require('lodash');
 var uuid = require('uuid');
 var branch = require('baobab-react/mixins').branch;
@@ -15,19 +14,10 @@ var _NoteList = React.createClass({
 
   cursors: function() {
     return {
-      notes:['models', 'notes'],
+      notes:['model', 'notes'],
     };
   },
   
-  deleteNote: function(id) {
-    this.state.notes[id].unset();
-    this.context.tree.commit();
-    console.log(this.state.notes);
-    _.each(this.state.notes, function(note) {
-      if (note.order > delete_note_order) this.state.notes.note.order--;
-    });
-  },
-
   deleteNote: function(id) {
     var delete_note_order = this.state.notes[id].order;
     this.context.tree.unset(['models', 'notes', id]);
@@ -55,6 +45,14 @@ var _NoteList = React.createClass({
     this.context.tree.commit();
   },
   
+  constructNotes: function() {
+    var notes_array = [];
+    for(var i in this.state.notes) {
+    //  notes_array.push(<Note id={this.state.notes[i].id} key={this.state.notes[i].id} deleteNote={this.deleteNote} />);
+   //   notes_array.push(<hr>);
+    }
+  },
+  
   render: function () {
     var notes_array  = [];
     for(var i in this.state.notes){
@@ -67,19 +65,11 @@ var _NoteList = React.createClass({
           <TabsBar />
           <SearchBar />
           {notes_array}
-          <FirstNoteButton />
-          <NewNoteButton addNoteButtonClick={this.addNote} />
+          <button type= "button" onClick={this.addNote} className="new-note-button">
+          Add Note
+          </button>
         </div>
       );
-    } else {
-      return (
-        <div className="notelist">
-          <TabsBar />
-          <SearchBar />
-          <FirstNoteButton />
-          <NewNoteButton addNoteButtonClick={this.addNote} />
-        </div>
-      ); 
     }
   }
 });
