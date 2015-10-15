@@ -12,6 +12,7 @@ var stateTree = new Baobab({
     tags_modal: false,
     tags_modal_note_id: {},
     tags_modal_completions: [],
+    sort_mode: 'all',
   }
 }); 
 
@@ -35,7 +36,7 @@ function initial_notes() {
 
   var notes_list = {};
 
-  for (var i = 1; i<3;i++) {
+  for (var i = 1; i<4;i++) {
     var note = {
         text: 'ran low on herbicide and applied lower rate here',
         tags: ['herbicide'],
@@ -46,6 +47,14 @@ function initial_notes() {
       note = {
         text: 'drown out; replanted 6/18/2015',
         tags: ['low area'],
+        fields: ['Smith40'],
+        polygon: [[[38.5, -85.5], [38.5, -85.55]]],
+      };
+    }
+    if (i === 3) {
+      note = {
+        text: 'applied radioactive slug oil',
+        tags: [],
         fields: ['Smith40'],
         polygon: [[[38.5, -85.5], [38.5, -85.55]]],
       };

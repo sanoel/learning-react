@@ -14,7 +14,8 @@ var _NoteList = React.createClass({
 
   cursors: function() {
     return {
-      notes:['model', 'notes'],
+      notes: ['model', 'notes'],
+      sortMode: ['view', 'sort_mode'],
     };
   },
   
@@ -45,32 +46,33 @@ var _NoteList = React.createClass({
     this.context.tree.commit();
   },
   
-  constructNotes: function() {
-    var notes_array = [];
-    for(var i in this.state.notes) {
-    //  notes_array.push(<Note id={this.state.notes[i].id} key={this.state.notes[i].id} deleteNote={this.deleteNote} />);
-   //   notes_array.push(<hr>);
-    }
-  },
-  
   render: function () {
     var notes_array  = [];
-    for(var i in this.state.notes){
-      var n = this.state.notes[i];
-      notes_array.push(<Note id={this.state.notes[i].id} key={this.state.notes[i].id} deleteNote={this.deleteNote} />);
+    if (this.state.sortMode === 'all') {
+      for (var i in this.state.notes) {
+        notes_array.push(<Note id={this.state.notes[i].id} key={this.state.notes[i].id} deleteNote={this.deleteNote} />);
+        }
+    } else {
+      var note_groups = _.groupBy(this.state.notes, this.state.sortMode);
+      var self = this;
+      _.each(note_groups, function(group, key) {
+        notes_array.push(<h1>{key}</h1>);
+        notes_array.push(<hr/>);
+        for (var i in group) {
+          notes_array.push(<Note id={group[i].id} key={group[i].id} deleteNote={self.deleteNote} />);
+        }
+      });
     }
-    if (notes_array.length > 0) {
-      return (
-        <div className="notelist">
-          <TabsBar />
-          <SearchBar />
-          {notes_array}
-          <button type= "button" onClick={this.addNote} className="new-note-button">
-          Add Note
-          </button>
-        </div>
-      );
-    }
+    return (
+      <div className="notelist">
+        <TabsBar className="tabs-bar"/>
+        <SearchBar />
+        {notes_array}
+        <button type= "button" onClick={this.addNote} className="new-note-button">
+        Add Note
+        </button>
+      </div>
+    );
   }
 });
 module.exports = _NoteList;

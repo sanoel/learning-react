@@ -14,3 +14,8 @@
   border-radius: 2px;
   padding: 5px;
 }
+.tabs-bar {
+  padding: 5px;
+  position: relative;
+  top: -25px;
+}
