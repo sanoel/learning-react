@@ -82,10 +82,10 @@ var _NoteList = React.createClass({
         });
       });
     }
+     //   <SearchBar />
     return (
       <div className="notelist">
         <TabsBar className="tabs-bar"/>
-        <SearchBar />
         {notes_array}
         <button type= "button" onClick={this.addNote} className="new-note-button">
         Add Note
