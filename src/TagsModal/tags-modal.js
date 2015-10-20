@@ -12,7 +12,7 @@ var _TagsModal = React.createClass({
     return {
       notes: ['model','notes'],
       tagsModalNoteId: ['view', 'tags_modal_note_id'],
-      allTags: ['model', 'allTags'],
+      allTags: ['model', 'all_tags'],
       tagsModalBool: ['view', 'tags_modal'],
       completions: ['view', 'tags_modal_completions'],
     };
@@ -56,17 +56,19 @@ var _TagsModal = React.createClass({
   },
 
   validate: function (tag) {
-    return this.state.allTags.indexOf(tag) > -1;
+    return this.state.completions.indexOf(tag) > -1;
   },
 
   addTag: function(tag) {
     var tagListCursor = this.context.tree.select('model', 'notes', this.state.tagsModalNoteId, 'tags');
     if (_.includes(this.state.allTags, tag)) {
+    //TODO: throw error message thingy
     } else {
       this.cursors.allTags.push(tag);
-    };
-    tagListCursor.push(tag);
-    this.context.tree.commit(); 
+    }
+      tagListCursor.push(tag);
+ //     this.cursors.completions.set([]);
+      this.context.tree.commit(); 
   },
 
   removeTag: function(tag) {
@@ -77,7 +79,7 @@ var _TagsModal = React.createClass({
     allTagsCursor.splice(tag);
     this.context.tree.commit(); 
   },
-
+  
   render: function(){
     var initialTags = {};
     if (_.isEmpty(this.state.tagsModalNoteId)){
@@ -88,10 +90,7 @@ var _TagsModal = React.createClass({
     var all_tags = this.state.allTags;
     var completionNodes = this.state.completions.map(function (comp) {
       var add = function (e) {
-        if (_.includes(this.refs.tags.getTags(), comp)) {
-        } else {
-          this.addTag(comp);
-        }
+        this.addTag(comp);
       }.bind(this);
       return React.createElement("span", {},React.createElement("a", { className: "suggestions", onClick: add}, comp)," ");
     }.bind(this)); 
@@ -105,14 +104,12 @@ var _TagsModal = React.createClass({
         <TagsInput 
           ref={'tags'}
           value={initialTags} 
-    //      onChange={this.change} 
           onTagAdd={this.addTag} 
           onTagRemove={this.removeTag}
           onChangeInput={this.complete}
-  //        addOnBlur={false}
           placeholder={"Add tags"}
    //       transform={this.transform}
-  //        validate={this.validate}
+   //       validate={this.validate}
         />
         {completionNodes}
         <input type="image" src="./src/TagsModal/checked-checkbox-48.ico" onClick={this.doneButtonClick} width="48px" height="48px" />

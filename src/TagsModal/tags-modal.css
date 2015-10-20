@@ -5,7 +5,6 @@
   padding-left: 5px;
   padding-top: 5px;
 }
-
 .react-tagsinput-tag {
   background-color: #cde69c;
   border-radius: 2px;
@@ -19,16 +18,13 @@
   margin-right: 5px;
   padding: 5px;
 }
-
 .react-tagsinput-remove {
   cursor: pointer;
   font-weight: bold;
 }
-
 .react-tagsinput-remove:before {
   content: " x";
 }
-
 .react-tagsinput-input {
   background: transparent;
   border: 0;
@@ -42,16 +38,13 @@
   padding: 5px;
   width: 80px;
 }
-
 .react-tagsinput-invalid {
   background-color: #fbd8db;
   color: #90111a;
 }
-
 .react-tagsinput-validating {
   background: #fffacd;
 }
-
 .suggestions {
   cursor: pointer;
   background-color: #337ab7;
@@ -59,4 +52,12 @@
   border-radius: 4px;
   padding: 2px;
   font-family: sans-serif;
+}
+.cancel-button {
+  position:absolute;
+  float:bottom;
+}
+.done-button {
+  position:absolute;
+  float:bottom;
 }

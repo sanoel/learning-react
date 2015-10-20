@@ -29,7 +29,6 @@ var _Note = React.createClass({
 
   openTagsModal: function() {
     this.cursors.tagsModalBool.set(true);
-//    this.context.tree.select('view', 'tags_modal_note_id').set(this.props.id);
     this.cursors.tagsModalNoteId.set(this.props.id);
     this.context.tree.commit();
   },

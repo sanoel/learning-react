@@ -16,6 +16,7 @@ var _NoteList = React.createClass({
     return {
       notes: ['model', 'notes'],
       sortMode: ['view', 'sort_mode'],
+      allTags: ['model', 'all_tags'],
     };
   },
   
@@ -52,7 +53,7 @@ var _NoteList = React.createClass({
       for (var i in this.state.notes) {
         notes_array.push(<Note id={this.state.notes[i].id} key={this.state.notes[i].id} deleteNote={this.deleteNote} />);
         }
-    } else {
+    } else if(this.state.sortMode === 'fields') {
       var note_groups = _.groupBy(this.state.notes, this.state.sortMode);
       var self = this;
       _.each(note_groups, function(group, key) {
@@ -61,6 +62,24 @@ var _NoteList = React.createClass({
         for (var i in group) {
           notes_array.push(<Note id={group[i].id} key={group[i].id} deleteNote={self.deleteNote} />);
         }
+      });
+    } else if (this.state.sortMode === 'tags') {
+      var self = this;
+      _.each(self.state.notes, function(note) {
+        if (_.isEmpty(note.tags)) {
+          var obj_id = uuid.v4().replace('-','');
+          notes_array.push(<Note id={note.id} key={obj_id} deleteNote={self.deleteNote} />);
+        }
+      });
+      _.each(this.state.allTags, function(tag) {
+        notes_array.push(<h1>{tag}</h1>);
+        notes_array.push(<hr/>);
+        _.each(self.state.notes, function(note) {
+          if (_.contains(note.tags, tag)) {
+            var obj_id = uuid.v4().replace('-','');
+            notes_array.push(<Note id={note.id} key={obj_id} deleteNote={self.deleteNote} />);
+          }
+        });
       });
     }
     return (
