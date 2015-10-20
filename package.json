@@ -30,7 +30,7 @@
     "react-tools": "^0.13.3",
     "request-promise": "^0.4.2",
     "style-loader": "^0.12.3",
-    "webpack": "^1.9.10",
+    "webpack": "^1.12.2",
     "xhr-promise": "^1.1.0"
   }
 }
