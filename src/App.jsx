@@ -6,7 +6,7 @@ var branch = require('baobab-react/mixins').branch;
 var _ = require('lodash');
 require('./App.css');
 var Map = require('./Map/map.js');
-var TagsModal = require('./TagsModal/tags-modal.js');
+var TagsModal = require('./TagsModal/tags-modal2.js');
 
 var _App = React.createClass({
   mixins: [branch],

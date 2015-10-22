@@ -10,7 +10,6 @@ var _Note = React.createClass({
 
   cursors: function () {
     return {
-      notes: ['model', 'notes'],
       self: ['model', 'notes', this.props.id],
       tagsModalBool: ['view', 'tags_modal'],
       tagsModalNoteId: ['view', 'tags_modal_note_id'],
