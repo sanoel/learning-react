@@ -5,6 +5,12 @@ var stateTree = new Baobab({
   model: {
     notes: initial_notes(), //initial_notes(),
     all_tags: ['low area', 'herbicide'],
+    tags_modal: {
+      visible: false,
+      note_id: {},
+      completions: [],
+      temp_tags: [],
+    },
   },
   view: {
     tags_modal: false,

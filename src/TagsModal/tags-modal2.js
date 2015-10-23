@@ -11,11 +11,10 @@ var _TagsModal = React.createClass({
   
   cursors: function() {
     return {
- //     notes: ['model','notes'],
       tagsModalNoteId: ['view', 'tags_modal_note_id'],
       allTags: ['model', 'all_tags'],
       tagsModalBool: ['view', 'tags_modal'],
-    //  completions: ['view', 'tags_modal_completions'],
+      completions: ['model', 'tags_modal', 'completions'],
     };
   },
 
@@ -34,13 +33,6 @@ var _TagsModal = React.createClass({
     this.context.tree.commit();
   },
 
-  getInitialState: function () {
-    return {
-      tags: []
-      , completions: []
-    };
-  },
-
   complete: function (value) {
     if (!value || value === "") {
       return this.setState({
@@ -50,7 +42,7 @@ var _TagsModal = React.createClass({
 
     value = value.toLowerCase();
 
-    var completions = this.state.tags.filter(function (comp) {
+    var completions = this.state.allTags.filter(function (comp) {
       var norm = comp.toLowerCase();
       return norm.substr(0, value.length) == value;
     }.bind(this));
@@ -86,15 +78,28 @@ var _TagsModal = React.createClass({
       , completions: []
     });
   },
+   
+  onAddTag: function(tag) {
+    var tagsCursor = this.context.tree.select('model', 'notes', this.state.tagsModalNoteId, 'tags');
+    tagsCursor.push(tag);
+    this.context.tree.commit();
+  },
+
+  onRemoveTag: function(tag) {
+    var tagsCursor = this.context.tree.select('model', 'notes', this.state.tagsModalNoteId, 'tags');
+    var tags = tagsCursor.get();
+    tags = _.without(tags, tag);
+    tagsCursor.set(tags);
+    this.context.tree.commit();
+  },
 
   render: function () { 
     var tagsCursor = this.context.tree.select('model', 'notes', this.state.tagsModalNoteId, 'tags');
     
-    var initialTags = {};
-    if (_.isEmpty(this.state.tagsModalNoteId)){
+    var tags = {};
+    if (this.state.tagsModalNoteId){
     } else {
-      var initialTagsCursor = this.context.tree.select('model', 'notes', this.state.tagsModalNoteId, 'tags');
-      initialTags = initialTagsCursor.get();
+      tags = tagsCursor.get();
     }
 
     var completionNodes = this.state.completions.map(function (comp) {
@@ -117,6 +122,8 @@ var _TagsModal = React.createClass({
           onChangeInput={this.complete}
           validate={this.validate}
           addOnBlur={false}
+          onTagAdd={this.onAddTag}
+          onTagRemove={this.onRemoveTag}
         />
         {completionNodes}
         <input type="image" src="./src/TagsModal/checked-checkbox-48.ico" onClick={this.doneButtonClick} width="48px" height="48px" />
