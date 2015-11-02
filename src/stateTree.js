@@ -43,14 +43,14 @@ function initial_notes() {
   for (var i = 1; i<4;i++) {
     var note = {
         text: 'ran low on herbicide and applied lower rate here',
-        tags: ['herbicide'],
+        tags: [{text:'herbicide'}],
         fields: ['Smith40'],
         polygon: [[-85.5, 38.5], [-85.55, 38.55]],
     };
     if (i === 2) {
       note = {
         text: 'drown out; replanted 6/18/2015',
-        tags: ['low area'],
+        tags: [{text:'low area'}],
         fields: ['Smith40'],
         polygon: [[[38.5, -85.5], [38.5, -85.55]]],
       };

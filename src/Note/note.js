@@ -1,7 +1,8 @@
-var React = require('react/addons');
+var React = require('react');
 var Baobab = require('baobab');
 var branch = require('baobab-react/mixins').branch;
 var TagsModal = require('../TagsModal/tags-modal.js');
+var uuid = require('uuid');
 var _ = require('lodash');
 require('./note.css');
 
@@ -11,8 +12,8 @@ var _Note = React.createClass({
   cursors: function () {
     return {
       self: ['model', 'notes', this.props.id],
-      tagsModalBool: ['view', 'tags_modal'],
-      tagsModalNoteId: ['view', 'tags_modal_note_id'],
+      modalVisible: ['model', 'tags_modal', 'visible'],
+      tagsModalNoteId: ['model', 'tags_modal', 'note_id'],
       allTags: ['model', 'allTags'],
     };
   },
@@ -27,12 +28,16 @@ var _Note = React.createClass({
   },
 
   openTagsModal: function() {
-    this.cursors.tagsModalBool.set(true);
+    this.cursors.modalVisible.set(true);
     this.cursors.tagsModalNoteId.set(this.props.id);
     this.context.tree.commit();
   },
 
   render: function () {
+    var tags = [];
+    _.each(this.state.self.tags, function(tag) {
+      tags.push(<a key={uuid.v4()}>{tag.text} </a>);
+    });
     return (
       <div className="note"> 
         <textarea value={this.state.self.text} onChange={this.textboxChanged}></textarea>
@@ -42,6 +47,7 @@ var _Note = React.createClass({
         <button type="button" className="tags" onClick={this.openTagsModal}>
           tags
         </button>
+        {tags}
       </div>
     ); 
   }

@@ -1,4 +1,4 @@
-var React = require('react/addons');
+var React = require('react');
 var Baobab = require('baobab');
 var branch = require('baobab-react/mixins').branch;
 var TagsInput = require('react-tagsinput');

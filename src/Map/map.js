@@ -1,4 +1,5 @@
-var React = require('react/addons');
+var React = require('react');
+var ReactDOM = require('react-dom');
 var leaflet = require('leaflet');
 var Baobab = require('baobab');
 var branch = require('baobab-react/mixins').branch;
@@ -42,9 +43,9 @@ var _Map = React.createClass({
 
   componentDidMount: function() {
     if (this.props.createMap) {
-      this.map = this.props.createMap(this.getDOMNode);
+      this.map = this.props.createMap(ReactDOM.findDOMNode(this));
     } else {
-      this.map = this.createMap(this.getDOMNode()); 
+      this.map = this.createMap(ReactDOM.findDOMNode(this));
     }
   }, 
 

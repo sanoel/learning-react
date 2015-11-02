@@ -1,4 +1,4 @@
-var React = require('react/addons');
+var React = require('react');
 require('./first-note-button.css');
 
 var _FirstNoteButton = React.createClass({

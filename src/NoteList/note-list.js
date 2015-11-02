@@ -1,4 +1,4 @@
-var React = require('react/addons');
+var React = require('react');
 var Note = require('../Note/note.js');
 var FirstNoteButton = require('../FirstNoteButton/first-note-button.js');
 var TabsBar = require('../TabsBar/tabs-bar.js');
@@ -66,7 +66,7 @@ var _NoteList = React.createClass({
     } else if (this.state.sortMode === 'tags') {
       var self = this;
       _.each(self.state.notes, function(note) {
-        if (_.isEmpty(note.tags)) {
+        if (note.tags) {
           var obj_id = uuid.v4().replace('-','');
           notes_array.push(<Note id={note.id} key={obj_id} deleteNote={self.deleteNote} />);
         }
@@ -75,7 +75,7 @@ var _NoteList = React.createClass({
         notes_array.push(<h1>{tag}</h1>);
         notes_array.push(<hr/>);
         _.each(self.state.notes, function(note) {
-          if (_.contains(note.tags, tag)) {
+          if (_.contains(note.tags.text, tag)) {
             var obj_id = uuid.v4().replace('-','');
             notes_array.push(<Note id={note.id} key={obj_id} deleteNote={self.deleteNote} />);
           }
