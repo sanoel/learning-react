@@ -1,3 +1,12 @@
+.modal-container {
+  background-color: white;
+  position: absolute;
+  top: 10px;
+}
+.modal-container .modal, .modal-container .modal-backdrop {
+  position: absolute;
+}
+
 .react-tagsinput {
   background-color: #fff;
   border: 1px solid #ccc;

@@ -4,6 +4,7 @@ var branch = require('baobab-react/mixins').branch;
 var TagsModal = require('../TagsModal/tags-modal.js');
 var uuid = require('uuid');
 var _ = require('lodash');
+var TextAreaAutoSize = require('react-textarea-autosize');
 require('./note.css');
 
 var _Note = React.createClass({
@@ -18,7 +19,7 @@ var _Note = React.createClass({
     };
   },
 
-  textboxChanged: function(evt) {
+  textAreaChanged: function(evt) {
     this.cursors.self.set('text', evt.target.value),
     this.context.tree.commit();
   },
@@ -36,15 +37,17 @@ var _Note = React.createClass({
   render: function () {
     var tags = [];
     _.each(this.state.self.tags, function(tag) {
-      tags.push(<a key={uuid.v4()}>{tag.text} </a>);
+      tags.push(
+        <span className='note-tags' key={uuid.v4()}>{tag.text}</span>
+      );
     });
     return (
       <div className="note"> 
-        <textarea value={this.state.self.text} onChange={this.textboxChanged}></textarea>
-        <button type="button" className="remove-note-button" onClick={this.deleteButtonClick}>
+        <TextAreaAutoSize value={this.state.self.text} minRows={3} className='note-text-input' onChange={this.textAreaChanged}></TextAreaAutoSize>
+        <button type="button" className="note-remove-button" onClick={this.deleteButtonClick}>
           Remove
         </button>
-        <button type="button" className="tags" onClick={this.openTagsModal}>
+        <button type="button" className="note-tags-button" onClick={this.openTagsModal}>
           tags
         </button>
         {tags}

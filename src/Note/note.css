@@ -1,21 +1,37 @@
 .note {
-  border-style:solid;
+  position: relative;
+  border-style: solid;
   border-width: 2px;
   border-color: DarkGrey;
   border-radius: 2px;
   background-color: white;
-  width: 460px;
-  height: 50px;
-  margin: 10px;
+  width: initial;
+  height: initial;
+  margin: 7px;
   padding: 5px;
   box-shadow: 3px 3px 3px black;
 }
-.remove-note-button {
-  float:right;
+.note-remove-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 2px;
 }
-textarea {
-  height: 45px;
-  width:375px;
+.note-text-input {
+  width:99%;
   resize:none;
-  border:none;
+  border-color:gray;
+}
+.note-tags {
+  background-color: #cde69c;
+  border-radius: 2px;
+  border: 1px solid #a5d24a;
+  color: #638421;
+  display: inline-block;
+  font-family: sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  margin: 5px;
+}
+.note-tag-button{
 }

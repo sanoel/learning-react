@@ -2,7 +2,7 @@ var React = require('react');
 var Baobab = require('baobab');
 var branch = require('baobab-react/mixins').branch;
 var _ = require('lodash');
-require('./tabs-bar.css');
+require('./sorting-tabs.css');
 
 var _TabsBar = React.createClass({
   mixins: [branch],
@@ -18,14 +18,14 @@ var _TabsBar = React.createClass({
 
   render: function() {
     return (
-      <div id="tabs-bar">
-      <button type="button" className="button" onClick={this.onClick.bind(null, 'all')}>
+      <div className="sorting-tabs">
+      <button type="button" className="tab-button" onClick={this.onClick.bind(null, 'all')}>
         All
       </button>
-      <button type="button" className="button" onClick={this.onClick.bind(null, 'fields')}>
+      <button type="button" className="tab-button" onClick={this.onClick.bind(null, 'fields')}>
         Fields
       </button>
-      <button type="button" className="button" onClick={this.onClick.bind(null, 'tags')}>
+      <button type="button" className="tab-button" onClick={this.onClick.bind(null, 'tags')}>
         Tags
       </button> 
       </div>

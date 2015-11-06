@@ -135,6 +135,7 @@ var _TagsModal = React.createClass({
     }.bind(this));
    return (
       <Modal
+        className='modal-container'
         show={this.state.visible} 
         onHide={this.onModalHide}>
         <h1>Edit Tags</h1>

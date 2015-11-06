@@ -19,8 +19,8 @@ var _App = React.createClass({
   render: function() {
     return ( 
       <div className="app">
-        <NoteList />
-        <Map id="map-pane"/>
+        <NoteList/>
+        <Map />
         <TagsModal /> 
       </div>
     );
