@@ -1,8 +1,8 @@
-var React = require('react/addons');
+var React = require('react');
+var ReactDOM = require('react-dom');
+var Baobab = require('baobab');
 var root = require('baobab-react/mixins').root;
 var App = require('./App.jsx');
-var Baobab = require('baobab');
-var uuid = require('uuid');
 var style = require('./reset.css'); 
 var stateTree = require('./stateTree.js');
      
@@ -18,4 +18,4 @@ var Main = React.createClass({
     );
   }
 });
-React.render(<Main tree={stateTree}/>,document.getElementById('app-container'));
+ReactDOM.render(<Main tree={stateTree}/>,document.getElementById('app-container'));

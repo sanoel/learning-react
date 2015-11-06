@@ -2,8 +2,7 @@ var React = require('react');
 var Baobab = require('baobab');
 var branch = require('baobab-react/mixins').branch;
 var TagsInput = require('react-tagsinput');
-var Modal = require('react-modal');
-var ReactDOM = require('react-dom');
+var Modal = require('react-bootstrap/lib/Modal');
 require('./tags-modal.css');
 
 var _TagsModal = React.createClass({
@@ -11,132 +10,128 @@ var _TagsModal = React.createClass({
   
   cursors: function() {
     return {
- //     notes: ['model','notes'],
-      tagsModalNoteId: ['view', 'tags_modal_note_id'],
+      note: ['model', 'tags_modal', 'note_id'],
       allTags: ['model', 'all_tags'],
-      tagsModalBool: ['view', 'tags_modal'],
-      completions: ['view', 'tags_modal_completions'],
+      visible: ['model', 'tags_modal', 'visible'],
+      completions: ['model', 'tags_modal', 'completions'],
     };
   },
 
   doneButtonClick: function(tags) {
-    var tagListCursor = this.context.tree.select('model', 'notes', this.state.tagsModalNoteId, 'tags');
-    tagListCursor.set(this.refs.tags);
-    this.cursors.tagsModalBool.set(false);
-    this.cursors.tagsModalNoteId.set({});
+    var tagListCursor = this.context.tree.select('model', 'notes', this.state.note, 'tags');
+    tags = _.each(tagListCursor.get(), function(tag) {
+      if (tag.action_if_done === 'remove') {
+        tagListCursor.unset(tag);
+      } else if (tag.action_if_done === 'add') {
+        tagListCursor.unset(tag, 'action_if_done')      
+      }
+    return {text: tag.text, cancellable:false};
+    });
+    tagListCursor.set(tags);
+    this.cursors.visible.set(false);
+    this.cursors.note.set({});
     this.context.tree.commit();
   },
 
   cancelButtonClick: function() {
-    this.cursors.tagsModalBool.set(false);
-    this.cursors.tagsModalNoteId.set({});
+    var tagListCursor = this.context.tree.select('model', 'notes', this.state.note, 'tags');
+    var tags = tagListCursor.get();
+    tags = _.each(tags, function(tag) {
+      if (tag.action_if_done === 'remove') {
+        tagListCursor.unset('action_if_done');
+      } else if (tag.action_if_done === 'add') {
+        tagListCursor.set(); 
+      }
+    });
+    this.cursors.visible.set(false);
+    this.cursors.note.set({});
     this.cursors.completions.set([]);
     this.context.tree.commit();
   },
+  
+  onModalHide: function() {
+
+  },
 
   complete: function (value) {
-    value = value.toLowerCase();
-      if (!value || value === "") {
-      this.cursors.completions.set([]);
-      this.context.tree.commit();
-      return;  
+    if (!value || value === "") {
+      return this.setState({
+        completions: []
+      });
     }
-    var compls = [];
-    compls = this.state.allTags.filter(function (comp) {
+
+    value = value.toLowerCase();
+
+    var completions = this.state.allTags.filter(function (comp) {
       var norm = comp.toLowerCase();
       return norm.substr(0, value.length) == value;
     }.bind(this));
-    compls.reduce(function (r, s) {
-      return r.indexOf(s) === -1 ? r.concat([s]) : r;
-    }, []);
 
-    this.cursors.completions.set(compls);
+    this.setState({
+      completions: completions.reduce(function (r, s) {
+        return r.indexOf(s) === -1 ? r.concat([s]) : r;
+      }, [])
+    });
+  },
+
+  change: function (tags) {
+    this.setState({
+      tags: tags
+      , completions: []
+    });
+  },
+   
+  onAddTag: function(tagText) {
+    var tagsCursor = this.context.tree.select('model', 'notes', this.state.note, 'tags');
+    tagsCursor.push({text:tagText, action_if_done:'add'});
+  },
+
+  onRemoveTag: function(tagText) {
+    var tagsCursor = this.context.tree.select('model', 'notes', this.state.note, 'tags');
+    var tags = tagsCursor.get(); 
+    tagsCursor.set('action_if_done', 'remove');
     this.context.tree.commit();
-
-
-  },
- 
-  onKeyDown: function() {
-    console.log("called???");
-    return;
   },
 
-  transform: function (tag) {
-    if (this.state.completions.indexOf(tag) > -1) {
-      return tag;
+  render: function () { 
+    var tags = {};
+    var values = [];
+    if (this.state.note){
+      var tagsCursor = this.context.tree.select('model', 'notes', this.state.note, 'tags');
+      tags = tagsCursor.get();
+      console.log("render tags");
+      console.log(tags);
+      _.each(tags, function(tag) {
+        if (tag.action_if_done) {
+          if (tag.action_if_done === 'add') {
+            values.push(tag.text);
+          }
+        } else {
+          values.push(tag.text);
+        }
+      });
     }
-    if (this.state.allTags.length === 1) {
-      return this.state.completions[0];
-    }
-  },
-
-  validate: function (tag) {
-    console.log(tag);
-    console.log(this.state.completions.indexOf(tag) > -1);
-    return true;
-   // return this.state.completions.indexOf(tag) > -1;
-  },
-
-  onAddTag: function(tag) {
-    console.log('add');
-    console.log(tag);
-    var tagListCursor = this.context.tree.select('model', 'notes', this.state.tagsModalNoteId, 'tags');
-    if (_.includes(this.state.allTags, tag)) {
-    //TODO: throw error message thingy
-    } else {
-      this.cursors.allTags.push(tag);
-    }
-      tagListCursor.push(tag);
- //     this.cursors.completions.set([]);
-      this.context.tree.commit(); 
-  },
-
-  removeTag: function(tag) {
-    var tagListCursor = this.context.tree.select('model', 'notes', this.state.tagsModalNoteId, 'tags');
-    var allTagsCursor = this.context.tree.select('model', 'allTags');
-    
-    tagListCursor.splice(tag);
-    allTagsCursor.splice(tag);
-    this.context.tree.commit(); 
-  },
-  
-  render: function(){
-    var initialTags = {};
-    if (_.isEmpty(this.state.tagsModalNoteId)){
-    } else {
-      var initialTagsCursor = this.context.tree.select('model', 'notes', this.state.tagsModalNoteId, 'tags');
-      initialTags = initialTagsCursor.get();
-    }
-
-    var all_tags = this.state.allTags;
+//    console.log(values);
     var completionNodes = this.state.completions.map(function (comp) {
       var add = function (e) {
-        console.log('onclick');
-        console.log(comp);
         this.refs.tags.addTag(comp);
       }.bind(this);
-      return React.createElement("span", {},React.createElement("a", { className: "suggestions", onClick: add}, comp)," ");
-    }.bind(this)); 
-
-    return (
+      return React.createElement("span", {},React.createElement("a", { className: "suggestions", onClick: add }, comp)," ");
+    }.bind(this));
+   return (
       <Modal
-        isOpen={this.state.tagsModalBool}
-        onRequestClose={this.closeTagsModal}
-        closeTimeoutMS={10000}>
+        show={this.state.visible} 
+        onHide={this.onModalHide}>
         <h1>Edit Tags</h1>
         <TagsInput 
           ref={'tags'}
-          value={initialTags} 
-          addOnBlur={false}
-     //     onTagAdd={this.onAddTag} 
-          onTagRemove={this.removeTag}
+          value={values} 
           onChange={this.change}
           onChangeInput={this.complete}
-          placeholder={"Add tags"}
-   //       onKeyDown={this.onKeyDown}
-//          onClick={this.addTag}
-   //       transform={this.transform}
           validate={this.validate}
+          addOnBlur={false}
+          onTagAdd={this.onAddTag}
+          onTagRemove={this.onRemoveTag}
         />
         {completionNodes}
         <input type="image" src="./src/TagsModal/checked-checkbox-48.ico" onClick={this.doneButtonClick} width="48px" height="48px" />
