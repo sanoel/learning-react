@@ -15,7 +15,7 @@ var _Note = React.createClass({
       self: ['model', 'notes', this.props.id],
       modalVisible: ['model', 'tags_modal', 'visible'],
       tagsModalNoteId: ['model', 'tags_modal', 'note_id'],
-      allTags: ['model', 'allTags'],
+      allTags: ['model', 'all_tags'],
     };
   },
 
@@ -37,9 +37,10 @@ var _Note = React.createClass({
   render: function () {
     var tags = [];
     _.each(this.state.self.tags, function(tag) {
-      tags.push(
-        <span className='note-tags' key={uuid.v4()}>{tag.text}</span>
-      );
+      if (tag.action_if_done) {
+        return;
+      }
+      tags.push(<span className='tag' key={uuid.v4()}>{tag.text}</span>);
     });
     return (
       <div className="note"> 
@@ -48,7 +49,7 @@ var _Note = React.createClass({
           Remove
         </button>
         <button type="button" className="note-tags-button" onClick={this.openTagsModal}>
-          tags
+          edit tags
         </button>
         {tags}
       </div>

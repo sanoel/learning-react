@@ -21,7 +21,6 @@ var _App = React.createClass({
       <div className="app">
         <NoteList/>
         <Map />
-        <TagsModal /> 
       </div>
     );
   }

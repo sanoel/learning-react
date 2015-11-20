@@ -6,6 +6,7 @@ var stateTree = new Baobab({
     notes: initial_notes(), //initial_notes(),
     all_tags: ['low area', 'herbicide'],
     tags_modal: {
+      input_text:'',
       visible: false,
       note_id: {},
       completions: [],
@@ -20,22 +21,6 @@ var stateTree = new Baobab({
   }
 }); 
 
-function initial_note() { 
-  var notes_list = {};
-  for (var i = 1; i<2;i++) {
-    var note = {
-        text: 'Type your first note here',
-        tags: [],
-        fields: [],
-        polygon: [[]],
-    };
-    note.order = i;
-    note.id = uuid.v4().replace('-','');
-    notes_list[note.id] = note;
-  };
-  return notes_list;
-}
-
 function initial_notes() { 
 
   var notes_list = {};
@@ -43,22 +28,24 @@ function initial_notes() {
   for (var i = 1; i<4;i++) {
     var note = {
         text: 'ran low on herbicide and applied lower rate here',
-        tags: [{text:'herbicide'}],
+        tags: {herbicide: {text:'herbicide'}},
         fields: ['Smith40'],
         polygon: [[-85.5, 38.5], [-85.55, 38.55]],
     };
     if (i === 2) {
+      var tag = 'low area';
       note = {
         text: 'drown out; replanted 6/18/2015',
-        tags: [{text:'low area'}],
+        tags: {},
         fields: ['Smith40'],
         polygon: [[[38.5, -85.5], [38.5, -85.55]]],
       };
+      note.tags['low area'] = {text:'low area'};
     }
     if (i === 3) {
       note = {
         text: 'applied snake oil',
-        tags: [],
+        tags: {},
         fields: ['Smith40'],
         polygon: [[[38.5, -85.5], [38.5, -85.55]]],
       };
@@ -68,5 +55,9 @@ function initial_notes() {
     notes_list[note.id] = note;
   };
   return notes_list;
+
+ function initial_tags() {
+  
+ }
 }
 module.exports = stateTree; 

@@ -5,6 +5,7 @@ var SearchBar = require('react-search-bar');
 var _ = require('lodash');
 var uuid = require('uuid');
 var branch = require('baobab-react/mixins').branch;
+var TagsModal = require('../TagsModal/tags-modal.js');
 require("./note-list.css");
 
 
@@ -36,7 +37,7 @@ var _NoteList = React.createClass({
   },
 
   addNote: function() {
-    var obj_id = uuid.v4().replace('-','');
+    var obj_id = uuid.v4();
     var obj = {   
       id: obj_id,
       text: ' ',
@@ -44,9 +45,9 @@ var _NoteList = React.createClass({
       tags: [],
       fields:[],
     };
+    console.log(this);
     this.cursors.notes.set(obj_id, obj);
     this.context.tree.commit();
-    console.log(this.state.notes);
   },
   
   render: function () {
@@ -87,6 +88,7 @@ var _NoteList = React.createClass({
      //   <SearchBar />
     return (
       <div className="note-list">
+        <TagsModal /> 
         <SortingTabs/>
         <div className="notes-container">{notes_array} </div>
         <button type= "button" onClick={this.addNote} className="add-note-button">

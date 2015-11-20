@@ -1,72 +1,37 @@
-.modal-container {
+.modal_container {
+  z-index: 2;
+  position: fixed;
+  top: 10%;
+  bottom: 10%;
+  left: 25%;
+  right: 25%;
   background-color: white;
-  position: absolute;
-  top: 10px;
-}
-.modal-container .modal, .modal-container .modal-backdrop {
-  position: absolute;
-}
-
-.react-tagsinput {
-  background-color: #fff;
-  border: 1px solid #ccc;
-  overflow: hidden;
-  padding-left: 5px;
-  padding-top: 5px;
-}
-.react-tagsinput-tag {
-  background-color: #cde69c;
+  border-width: 2px;
   border-radius: 2px;
-  border: 1px solid #a5d24a;
-  color: #638421;
+  border-color: #ABABAB;
+  padding: 4px;
+}
+#cancel_button {
+  position: absolute;
+  float: left;
+  bottom: 10%;
+  left: 10%;
+  font-size: larger;
   display: inline-block;
-  font-family: sans-serif;
-  font-size: 13px;
-  font-weight: 400;
-  margin-bottom: 5px;
-  margin-right: 5px;
-  padding: 5px;
+  background-color: red;
+  border-width: 2px;
+  border-radius: 2px;
+  border-color: gray;
 }
-.react-tagsinput-remove {
-  cursor: pointer;
-  font-weight: bold;
-}
-.react-tagsinput-remove:before {
-  content: " x";
-}
-.react-tagsinput-input {
-  background: transparent;
-  border: 0;
-  color: #777;
-  font-family: sans-serif;
-  font-size: 13px;
-  font-weight: 400;
-  margin-bottom: 6px;
-  margin-top: 1px;
-  outline: none;
-  padding: 5px;
-  width: 80px;
-}
-.react-tagsinput-invalid {
-  background-color: #fbd8db;
-  color: #90111a;
-}
-.react-tagsinput-validating {
-  background: #fffacd;
-}
-.suggestions {
-  cursor: pointer;
-  background-color: #337ab7;
-  color: #fff;
-  border-radius: 4px;
-  padding: 2px;
-  font-family: sans-serif;
-}
-.cancel-button {
-  position:absolute;
-  float:bottom;
-}
-.done-button {
-  position:absolute;
-  float:bottom;
+#done_button {
+  position: absolute;
+  float: right;
+  font-size: larger;
+  bottom: 10%;
+  right: 10%;
+  display:inline-block;
+  background-color: green;
+  border-width: 2px;
+  border-radius: 2px;
+  border-color: gray;
 }

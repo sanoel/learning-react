@@ -22,7 +22,8 @@
   resize:none;
   border-color:gray;
 }
-.note-tags {
+.tag {
+  position: relative;
   background-color: #cde69c;
   border-radius: 2px;
   border: 1px solid #a5d24a;
@@ -33,5 +34,9 @@
   font-weight: 400;
   margin: 5px;
 }
-.note-tag-button{
+.note-tags-button {
+  position: relative;
+  bottom: 0;
+  left: 0;
+  margin: 2px;
 }

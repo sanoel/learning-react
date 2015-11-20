@@ -1,7 +1,7 @@
 var React = require('react');
 var Baobab = require('baobab');
 var branch = require('baobab-react/mixins').branch;
-var TagsInput = require('react-tagsinput');
+var TagsInput = require('../TagsInput/tags-input.js');
 var Modal = require('react-bootstrap/lib/Modal');
 var uuid = require('uuid');
 require('./tags-modal.css');
@@ -18,29 +18,49 @@ var _TagsModal = React.createClass({
     };
   },
 
-  doneButtonClick: function(tags) {
+  doneButtonClick: function() {
     var tagListCursor = this.context.tree.select('model', 'notes', this.state.note, 'tags');
-    tags = _.each(tagListCursor.get(), function(tag) {
+    var noteList = this.context.tree.select('model', 'notes').get();
+    var self = this;
+    _.each(tagListCursor.get(), function(tag) {
       if (tag.action_if_done === 'remove') {
-        tagListCursor.unset(tag);
+        tagListCursor.unset(tag.text);
+        self.context.tree.commit();
+        var deleteTag = false;
+        _.each(noteList, function(note) {
+          _.each(note.tags, function(t) {
+            if (t.text===tag.text) {
+              deleteTag = true;
+              return; 
+            }
+          });
+        });
+        if (deleteTag === true) {
+          var allTagList = self.cursors.allTags.get();
+          allTagList.pop(tag.text);
+          self.cursors.allTags.unset(tag.text);
+        }
       } else if (tag.action_if_done === 'add') {
-        tagListCursor.unset(tag, 'action_if_done')      
+        var tagCursor = self.context.tree.select('model', 'notes', self.state.note, 'tags', tag.text);
+        tagCursor.unset('action_if_done');
       }
     });
-    //tagListCursor.set(tags);
     this.cursors.visible.set(false);
     this.cursors.note.set({});
     this.context.tree.commit();
+    console.log(this.state.allTags);
   },
 
   cancelButtonClick: function() {
     var tagListCursor = this.context.tree.select('model', 'notes', this.state.note, 'tags');
     var tags = tagListCursor.get();
-    tags = _.each(tags, function(tag) {
+    self = this;
+    _.each(tags, function(tag) {
       if (tag.action_if_done === 'remove') {
-        tagListCursor.unset('action_if_done');
+        var tagCursor = self.context.tree.select('model', 'notes', self.state.note, 'tags', tag.text);
+        tagCursor.unset('action_if_done');
       } else if (tag.action_if_done === 'add') {
-        tagListCursor.set(); 
+        tagListCursor.unset(tag.text); 
       }
     });
     this.cursors.visible.set(false);
@@ -50,110 +70,18 @@ var _TagsModal = React.createClass({
   },
   
   onModalHide: function() {
-
-  },
-
-  complete: function (value) {
-    if (!value || value === "") {
-      return this.setState({
-        completions: []
-      });
-    }
-
-    value = value.toLowerCase();
-
-    var completions = this.state.allTags.filter(function (comp) {
-      var norm = comp.toLowerCase();
-      return norm.substr(0, value.length) == value;
-    }.bind(this));
-
-    this.setState({
-      completions: completions.reduce(function (r, s) {
-        return r.indexOf(s) === -1 ? r.concat([s]) : r;
-      }, [])
-    });
-  },
-
-  change: function (tags) {
-    this.setState({
-      tags: tags
-      , completions: []
-    });
-  },
-   
-  onAddTag: function(tagText) {
-    var tagsCursor = this.context.tree.select('model', 'notes', this.state.note, 'tags');
-    console.log(tagsCursor.get());
-    tagsCursor.push({text:tagText, action_if_done:'add'});
-    this.context.tree.commit();
-    console.log(tagsCursor.get());
-  },
-
-  onRemoveTag: function(tagText) {
-    var tagCursor = this.context.tree.select('model', 'notes', this.state.note, 'tags', function(tag) {
-      return tag.text === tagText;
-    });
-    console.log('tagcursor');
-    console.log(tagCursor.get());
-    tagCursor.set('action_if_done', 'remove');
-    this.context.tree.commit();
-    console.log('tagcursor2');
-    console.log(tagCursor.get());
   },
 
   render: function () { 
-    var tags = {};
-    var values = [];
-    console.log(this.state.note);
-    if (!_.isEmpty(this.state.note)){
-      var tagsCursor = this.context.tree.select('model', 'notes', this.state.note, 'tags');
-      tags = tagsCursor.get();
-      console.log("render tags");
-      console.log(tags);
-      _.each(tags, function(tag) {
-        console.log('tag');
-        console.log(tag);
-        if (tag.action_if_done) {
-          if (tag.action_if_done === 'add') {
-            console.log('1');
-            console.log(tag.text);
-            values.push(tag.text);
-          }
-        } else {
-          console.log('2');
-          console.log(tag.text);
-          values.push(tag.text);
-        }
-      });
-    }
-//    console.log(values);
-    var completionNodes = this.state.completions.map(function (comp) {
-      var add = function (e) {
-        this.refs.tags.addTag(comp);
-      }.bind(this);
-      return React.createElement("span", {key:uuid.v4()},React.createElement("a", { className: "suggestions", onClick: add, key: uuid.v4() }, comp)," ");
-    }.bind(this));
    return (
       <Modal
-        className='modal-container'
+        className='modal_container'
         show={this.state.visible} 
         onHide={this.onModalHide}>
-        <h1>Edit Tags</h1>
-        <TagsInput 
-          ref={'tags'}
-          value={values} 
-          onChange={this.change}
-          onChangeInput={this.complete}
-          validate={this.validate}
-          addOnBlur={false}
-          onTagAdd={this.onAddTag}
-          onTagRemove={this.onRemoveTag}
-        />
-        {completionNodes}
-        <input type="image" src="./src/TagsModal/checked-checkbox-48.ico" onClick={this.doneButtonClick} width="48px" height="48px" />
-        Done
-        <input type="image" src="./src/TagsModal/checked-checkbox-48.ico" onClick={this.cancelButtonClick} width="48px" height="48px" />
-        Cancel 
+        <h1>tag it!</h1>
+        <TagsInput />
+        <button id='done_button' onClick={this.doneButtonClick} width="48px" height="48px">Done</button>
+        <button id='cancel_button' onClick={this.cancelButtonClick} width="48px" height="48px">Cancel</button>
       </Modal>
     );
   },
