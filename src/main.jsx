@@ -4,7 +4,7 @@ var Baobab = require('baobab');
 var root = require('baobab-react/mixins').root;
 var App = require('./App.jsx');
 var style = require('./reset.css'); 
-var stateTree = require('./stateTree.js');
+var tree = require('./stateTree.js');
      
 var Main = React.createClass({
 
@@ -18,4 +18,4 @@ var Main = React.createClass({
     );
   }
 });
-ReactDOM.render(<Main tree={stateTree}/>,document.getElementById('app-container'));
+ReactDOM.render(<Main tree={tree}/>,document.getElementById('app-container'));

@@ -13,9 +13,11 @@ var _Note = React.createClass({
   cursors: function () {
     return {
       self: ['model', 'notes', this.props.id],
-      modalVisible: ['model', 'tags_modal', 'visible'],
+      modalVisible: ['model', 'notes', this.props.id, 'tags_modal_visibility'],
       tagsModalNoteId: ['model', 'tags_modal', 'note_id'],
       allTags: ['model', 'all_tags'],
+      selectedNote: ['model', 'selected_note'],
+      showHide: ['model', 'notes', this.props.id, 'geojson_visible'],
     };
   },
 
@@ -34,24 +36,51 @@ var _Note = React.createClass({
     this.context.tree.commit();
   },
 
+  selectNote: function() {
+    this.cursors.selectedNote.set(this.props.id);
+    this.context.tree.commit();   
+  },
+
+  showHide: function() {
+    var currentVisibility = this.cursors.showHide.get();
+    if (currentVisibility === 'Show') {
+      this.cursors.showHide.set('Hide');
+    } else {
+      this.cursors.showHide.set('Show');
+    }
+    this.context.tree.commit();
+  },
+
   render: function () {
+    var noteClass = 'note';
+    if (this.state.self.id === this.state.selectedNote) {
+      noteClass = 'selected-note';
+    }
     var tags = [];
     _.each(this.state.self.tags, function(tag) {
       if (tag.action_if_done) {
-        return;
+        if (tag.action_if_done === 'add') {
+        } else {
+          tags.push(<span className='tag' key={uuid.v4()}>{tag.text}</span>);
+        }
+      } else {
+        tags.push(<span className='tag' key={uuid.v4()}>{tag.text}</span>);
       }
-      tags.push(<span className='tag' key={uuid.v4()}>{tag.text}</span>);
     });
     return (
-      <div className="note"> 
+      <div className={noteClass} onClick={this.selectNote}> 
         <TextAreaAutoSize value={this.state.self.text} minRows={3} className='note-text-input' onChange={this.textAreaChanged}></TextAreaAutoSize>
         <button type="button" className="note-remove-button" onClick={this.deleteButtonClick}>
-          Remove
+          Delete Note
         </button>
-        <button type="button" className="note-tags-button" onClick={this.openTagsModal}>
+        <button type="button" className="note-hide-show-button" onClick={this.showHide}>
+          {this.cursors.showHide.get()}
+        </button>
+        <button type="button" className="note-edit-tags-button" onClick={this.openTagsModal}>
           edit tags
         </button>
         {tags}
+        <TagsModal/>
       </div>
     ); 
   }

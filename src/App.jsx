@@ -20,7 +20,7 @@ var _App = React.createClass({
     return ( 
       <div className="app">
         <NoteList/>
-        <Map />
+        <Map id="map-pane"/>
       </div>
     );
   }

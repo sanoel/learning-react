@@ -13,7 +13,7 @@ var _TagsInput = React.createClass({
     return {
       noteId: ['model', 'tags_modal', 'note_id'],
       completions: ['model', 'tags_modal', 'completions'],
-      allTags: ['model', 'all_tags'],
+      tags: ['model', 'tags'],
       visible: ['model', 'tags_modal', 'visible'],
       inputText: ['model', 'tags_modal', 'input_text'],
     };
@@ -23,10 +23,22 @@ var _TagsInput = React.createClass({
     if (tagText === "") {
         return;
     }
-    var tagsCursor = this.context.tree.select('model', 'notes', this.state.noteId, 'tags');
-    tagsCursor.set(tagText, {text:tagText, action_if_done:'add'});
-    if (!_.includes(this.state.allTags, tagText)) {
-      this.cursors.allTags.push(tagText);
+    var tagCursor = this.context.tree.select('model', 'notes', this.state.noteId, 'tags', tagText);
+    var tag = tagCursor.get();
+    if (tag) {
+      if (tag.action_if_done === 'remove') {
+        console.log('readding existing tag');
+        tagCursor.unset('action_if_done'); 
+        console.log(tagCursor.get());
+      } else {
+      //TODO: it is already on the list!  throw an error!
+      }
+    } else {
+      var tagsCursor = this.context.tree.select('model', 'notes', this.state.noteId, 'tags');
+      tagsCursor.set(tagText, {text:tagText, action_if_done:'add'});
+    }
+    if (!_.includes(this.state.tags, tagText)) {
+      this.cursors.tags.set(tagText, {text:tagText, references: 1});
     }
     this.cursors.inputText.set('');
     this.cursors.completions.set([]);
@@ -34,16 +46,16 @@ var _TagsInput = React.createClass({
   },
 
   removeTag: function(tagText) {
-    var tagCursor = this.context.tree.select('model', 'notes', this.state.noteId, 'tags');
-    var tags = tagCursor.get();
-    var self = this;
-    _.each(tags, function(tag) {
-      if (tag.text === tagText) {
-        var cursor = self.context.tree.select('model', 'notes', self.state.noteId, 'tags', tag.text);
-        cursor.set('action_if_done', 'remove');
-      }
-    });
-    self.context.tree.commit();
+    var tagCursor = this.context.tree.select('model', 'notes', this.state.noteId, 'tags', tagText);
+    var tag = tagCursor.get();
+    if (tag.action_if_done === 'add') {
+      console.log('remove pending add');
+      tagCursor.unset;
+    } else {
+      console.log('setting remove on an existing tag');
+      tagCursor.set('action_if_done', 'remove');
+    }
+    this.context.tree.commit();
   },
 
   onChange: function(evt) {
@@ -66,13 +78,13 @@ var _TagsInput = React.createClass({
     }
    
     value = value.toLowerCase();
-    var completions = _.filter(this.state.allTags, function (comp) {
-      var norm = comp.toLowerCase();
+    var completions = _.filter(this.state.tags, function (comp) {
+      var norm = comp.text.toLowerCase();
       return norm.substr(0, value.length) == value;
     }.bind(this));
 
     this.cursors.completions.set(completions.reduce(function (r, s) {
-        return r.indexOf(s) === -1 ? r.concat([s]) : r;
+      return r.indexOf(s.text) === -1 ? r.concat([s.text]) : r;
     }, []));
     this.context.tree.commit();
   },
@@ -106,6 +118,7 @@ var _TagsInput = React.createClass({
         </div>
         {completion_list}
         <input type='text'
+          placeholder="enter tag descriptors"
           list='completion_list'
           id='tags_input'
           value={this.state.inputText}

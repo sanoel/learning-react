@@ -12,7 +12,7 @@ var _TagsModal = React.createClass({
   cursors: function() {
     return {
       note: ['model', 'tags_modal', 'note_id'],
-      allTags: ['model', 'all_tags'],
+      tags: ['model', 'tags'],
       visible: ['model', 'tags_modal', 'visible'],
       completions: ['model', 'tags_modal', 'completions'],
     };
@@ -25,21 +25,6 @@ var _TagsModal = React.createClass({
     _.each(tagListCursor.get(), function(tag) {
       if (tag.action_if_done === 'remove') {
         tagListCursor.unset(tag.text);
-        self.context.tree.commit();
-        var deleteTag = false;
-        _.each(noteList, function(note) {
-          _.each(note.tags, function(t) {
-            if (t.text===tag.text) {
-              deleteTag = true;
-              return; 
-            }
-          });
-        });
-        if (deleteTag === true) {
-          var allTagList = self.cursors.allTags.get();
-          allTagList.pop(tag.text);
-          self.cursors.allTags.unset(tag.text);
-        }
       } else if (tag.action_if_done === 'add') {
         var tagCursor = self.context.tree.select('model', 'notes', self.state.note, 'tags', tag.text);
         tagCursor.unset('action_if_done');
@@ -48,7 +33,6 @@ var _TagsModal = React.createClass({
     this.cursors.visible.set(false);
     this.cursors.note.set({});
     this.context.tree.commit();
-    console.log(this.state.allTags);
   },
 
   cancelButtonClick: function() {
@@ -72,17 +56,21 @@ var _TagsModal = React.createClass({
   onModalHide: function() {
   },
 
-  render: function () { 
-   return (
-      <Modal
-        className='modal_container'
-        show={this.state.visible} 
-        onHide={this.onModalHide}>
-        <h1>tag it!</h1>
+  render: function () {
+    var visibilityCursor = this.context.tree.select('model', 'notes', this.state.note, 'tags_modal_visibility');
+    var containerId = '';
+    if (visibilityCursor.get()) {
+      containerId = 'tagging-container-show';
+    } else {
+      containerId = 'tagging-container-hide';
+    }
+
+    return (
+      <div id={containerId}> 
         <TagsInput />
         <button id='done_button' onClick={this.doneButtonClick} width="48px" height="48px">Done</button>
         <button id='cancel_button' onClick={this.cancelButtonClick} width="48px" height="48px">Cancel</button>
-      </Modal>
+      </div>
     );
   },
 });

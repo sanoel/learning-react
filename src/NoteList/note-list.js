@@ -85,10 +85,8 @@ var _NoteList = React.createClass({
         });
       });
     }
-     //   <SearchBar />
     return (
       <div className="note-list">
-        <TagsModal /> 
         <SortingTabs/>
         <div className="notes-container">{notes_array} </div>
         <button type= "button" onClick={this.addNote} className="add-note-button">
