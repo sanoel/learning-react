@@ -17,10 +17,11 @@ var _App = React.createClass({
   },
   
   render: function() {
+    var position = [38, -85.5];
     return ( 
       <div className="app">
         <NoteList/>
-        <Map id="map-pane"/>
+        <Map/>
       </div>
     );
   }

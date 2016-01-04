@@ -16,10 +16,6 @@ module.exports = {
     ],
   },
 
-  externals: {
-    'leaflet': 'L',
-  },
-
   postcss: function () {
     return [autoprefixer, precss];
   },
