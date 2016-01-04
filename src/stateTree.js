@@ -68,18 +68,10 @@ function initial_notes() {
         text: 'applied snake oil',
         tags: [],
         fields: ['Smith40'],
-        geojson: {
-          "type": "Feature",
-          "properties": {
-            "name": "Coors Field",
-            "amenity": "Baseball Stadium",
-            "popupContent": "This is where the Rockies play!"
-          },
-          "geometry": {
-            "type": "Point",
-            "coordinates": [-104.99404, 39.75621]
-          }
-        },
+        geojson:
+{"type":"FeatureCollection","properties":{"kind":"state","state":"IN"},"features":[
+{"type":"Feature","properties":{"kind":"county","name":"Tippecanoe","state":"IN"},"geometry":{"type":"MultiPolygon","coordinates":[[[[-87.0964,40.5603],[-86.7733,40.5603],[-86.6966,40.5603],[-86.6966,40.4343],[-86.6966,40.2152],[-86.9211,40.2152],[-87.0909,40.2152],[-87.0909,40.3686],[-87.0964,40.4781]]]]}}
+]},
         geojson_visible: 'Show',
         tags_modal_visibility: false,
         color: {getColor},
