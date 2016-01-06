@@ -8,6 +8,8 @@ var _ = require('lodash');
 var uuid = require('uuid');
 var GeoJSON = require('react-leaflet').GeoJson;
 var Polygon = require('react-leaflet').Polygon;
+var Menu = require('./menu-bar.js');
+//var AddPolygonControl = require('./addPolygonButton.js');
 require('./map.css');
 import { render } from 'react-dom';
 
@@ -26,16 +28,20 @@ var _Map = React.createClass({
     var position = [40.3686,-87.0909];
     var geoJSONData = [];
     _.each(this.state.notes, function(note) {
-      geoJSONData.push(<GeoJSON data={note.geojson} key={uuid.v4()}/>);
+      console.log(note.color);
+      geoJSONData.push(<GeoJSON data={note.geojson} color={note.color} key={uuid.v4()}/>);
     });
     return(
-      <Map center={position} zoom={13}>
-        <TileLayer
-          url='http://otile1.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png'
-          attribution='Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
-        />
-        {geoJSONData}
-      </Map> 
+      <div id='map-panel'>
+        <Menu />
+        <Map center={position} zoom={13}>
+          <TileLayer
+            url='http://otile1.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.png'
+            attribution='Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
+          />
+          {geoJSONData}
+        </Map> 
+      </div>
     )
   },
 

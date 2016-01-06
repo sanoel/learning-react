@@ -12,7 +12,7 @@ var _Note = React.createClass({
 
   cursors: function () {
     return {
-      self: ['model', 'notes', this.props.id],
+      note: ['model', 'notes', this.props.id],
       modalVisible: ['model', 'notes', this.props.id, 'tags_modal_visibility'],
       tagsModalNoteId: ['model', 'tags_modal', 'note_id'],
       allTags: ['model', 'all_tags'],
@@ -22,7 +22,7 @@ var _Note = React.createClass({
   },
 
   textAreaChanged: function(evt) {
-    this.cursors.self.set('text', evt.target.value),
+    this.cursors.note.set('text', evt.target.value),
     this.context.tree.commit();
   },
 
@@ -53,11 +53,11 @@ var _Note = React.createClass({
 
   render: function () {
     var noteClass = 'note';
-    if (this.state.self.id === this.state.selectedNote) {
+    if (this.state.note.id === this.state.selectedNote) {
       noteClass = 'selected-note';
     }
     var tags = [];
-    _.each(this.state.self.tags, function(tag) {
+    _.each(this.state.note.tags, function(tag) {
       if (tag.action_if_done) {
         if (tag.action_if_done === 'add') {
         } else {
@@ -67,9 +67,12 @@ var _Note = React.createClass({
         tags.push(<span className='tag' key={uuid.v4()}>{tag.text}</span>);
       }
     });
+    var divStyle = {
+      borderColor: this.state.note.color
+    }
     return (
-      <div className={noteClass} onClick={this.selectNote}> 
-        <TextAreaAutoSize value={this.state.self.text} minRows={3} className='note-text-input' onChange={this.textAreaChanged}></TextAreaAutoSize>
+      <div style={divStyle} className={noteClass} onClick={this.selectNote}> 
+        <TextAreaAutoSize value={this.state.note.text} minRows={3} className='note-text-input' onChange={this.textAreaChanged}></TextAreaAutoSize>
         <button type="button" className="note-remove-button" onClick={this.deleteButtonClick}>
           Delete Note
         </button>

@@ -33,6 +33,7 @@ function initial_tags() {
 function initial_notes() { 
   var notes_list = {};
   for (var i = 1; i<4;i++) {
+    var col = '#'+(Math.round(Math.random()* 127) + 127).toString(16)+(Math.round(Math.random()* 127) + 127).toString(16)+(Math.round(Math.random()* 127) + 127).toString(16);
     var note = {
         text: 'ran low on herbicide and applied lower rate here',
         tags: {herbicide: {text: 'herbicide'}},
@@ -44,9 +45,10 @@ function initial_notes() {
         },
         geojson_visible: 'Show',
         tags_modal_visibility: false,
-        color: {getColor},
+        color: col,
     };
     if (i === 2) {
+      var col = '#'+(Math.round(Math.random()* 127) + 127).toString(16)+(Math.round(Math.random()* 127) + 127).toString(16)+(Math.round(Math.random()* 127) + 127).toString(16);
       var text = 'low area';
       note = {
         text: 'drown out; replanted 6/18/2015',
@@ -59,11 +61,12 @@ function initial_notes() {
         }, 
         geojson_visible: 'Show',
         tags_modal_visibility: false,
-        color: {getColor},
+        color: col,
       };
       note.tags['low area'] = {text:'low area'};
     }
     if (i === 3) {
+      var col = '#'+(Math.round(Math.random()* 127) + 127).toString(16)+(Math.round(Math.random()* 127) + 127).toString(16)+(Math.round(Math.random()* 127) + 127).toString(16);
       note = {
         text: 'applied snake oil',
         tags: [],
@@ -74,7 +77,7 @@ function initial_notes() {
 ]},
         geojson_visible: 'Show',
         tags_modal_visibility: false,
-        color: {getColor},
+        color: col,
       };
     }
     note.order = i;
@@ -82,12 +85,13 @@ function initial_notes() {
     notes_list[note.id] = note;
   };
   return notes_list;
-
-  function getColor() {
-    var r = (Math.round(Math.random()* 127) + 127).toString(16);
-    var g = (Math.round(Math.random()* 127) + 127).toString(16);
-    var b = (Math.round(Math.random()* 127) + 127).toString(16);
-    return '#' + r + g + b;
-  }
 }
+
+function getColor() {
+  var r = (Math.round(Math.random()* 127) + 127).toString(16);
+  var g = (Math.round(Math.random()* 127) + 127).toString(16);
+  var b = (Math.round(Math.random()* 127) + 127).toString(16);
+  return '#' + r.toString() + g.toString() + b.toString();
+}
+
 module.exports = tree; 
